@@ -8,7 +8,22 @@ class User < ApplicationRecord
          :jwt_authenticatable, jwt_revocation_strategy: self
 
 
+  ROLES = %W{admin client}
+
+
   def jwt_payload
     super
   end
+
+#  def admin?
+#    role == 'admin'
+#  end
+#  se crean los metodos de cada elemento del array
+  ROLES.each do |role_name|
+    define_method "#{role_name}?" do
+      role == role_name
+    end
+  end
+
+
 end
