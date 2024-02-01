@@ -3,10 +3,8 @@ class MessagesController < ApplicationController
   def index
     @userFront = params[:user].to_i
     @chat_room_id = params[:chat_room_id].to_i
-
     @messages = Message.where(chat_room_id: @chat_room_id)
-
-    render json: @messages
+    render json: @messages, status: :ok
   end
 
   def create

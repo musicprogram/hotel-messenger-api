@@ -1,11 +1,15 @@
 class ChatRoomsController < ApplicationController
+  load_and_authorize_resource
+
   def index
     @chat_rooms = ChatRoom.all
+    render json: @chat_rooms
   end
 
   def show
     @chat_room = ChatRoom.find(params[:id])
     @messages = @chat_room.messages
+    render json: @messages
   end
 
   def new
@@ -16,9 +20,9 @@ class ChatRoomsController < ApplicationController
     @chat_room = ChatRoom.new(chat_room_params)
 
     if @chat_room.save
-      redirect_to @chat_room, notice: 'Chat room was successfully created.'
+      render json: @chat_room
     else
-      render :new
+      render json: {error: "cannot connection"}
     end
   end
 
