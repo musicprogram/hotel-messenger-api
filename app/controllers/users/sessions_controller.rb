@@ -12,7 +12,9 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   def respond_to_on_destroy
-    jwt_payload = JWT.decode(request.headers['Authorization'].split(' ')[1], Rails.application.credentials.fetch(:secret_key_base)).first
+    begin
+    token = request.headers['Authorization'].split(' ')[1]
+    jwt_payload = JWT.decode(token, Rails.application.credentials.fetch(:secret_key_base)).first
     current_user = User.find(jwt_payload['sub'])
     if current_user
       render json: {
@@ -25,5 +27,16 @@ class Users::SessionsController < Devise::SessionsController
         message: "User has no active session"
       }, status: :unauthorized
     end
+  rescue JWT::DecodeError => e
+    render json: {
+      status: 401,
+      message: "Token decode error: #{e.message}"
+    }, status: :unauthorized
+  rescue ActiveRecord::RecordNotFound => e
+    render json: {
+      status: 401,
+      message: "User not found: #{e.message}"
+    }, status: :unauthorized
+  end
   end
 end
