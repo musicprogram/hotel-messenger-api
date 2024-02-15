@@ -1,3 +1,5 @@
 class ChatRoom < ApplicationRecord
-
-end
+    validates :name,
+      uniqueness: { message: "ya está en uso" },
+      presence: { message: "no puede estar en blanco" }
+  end

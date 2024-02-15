@@ -1,0 +1,17 @@
+es:
+  activerecord:
+    attributes:
+      chat_room:
+        name: "El nombre"
+    errors:
+      models:
+        chat_room:
+          attributes:
+            name:
+              taken: "ya está en uso"
+              blank: "no puede estar en blanco"
+  devise:
+    failure:
+      user:
+        invalid: "La dirección de correo electrónico o la contraseña son inválidas"
+      invalid: "La dirección de correo electrónico o la contraseña son inválidas"
